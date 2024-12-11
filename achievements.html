@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - Ohabasirim Favour Uzondu</title>
+    <style>
+        /* Base styles (copy from index.html) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background: 
+                linear-gradient(135deg, rgba(45, 52, 54, 0.95), rgba(99, 110, 114, 0.9)),
+                url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') fixed;
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Navigation styles (copy from index.html) */
+        .nav-container {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-menu {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 15px;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Achievement specific styles */
+        .achievement-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 3.5em;
+            background: linear-gradient(45deg, #FFD700, #FF8C00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.2);
+        }
+
+        .achievement-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #FFD700;
+            text-align: center;
+        }
+
+        .achievement-title {
+            font-size: 1.5em;
+            color: white;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .achievement-year {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #FFD700, #FF8C00);
+            padding: 5px 15px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .achievement-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        /* Add shine effect */
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 215, 0, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .achievement-card:hover::before {
+            left: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="skills.html">Skills</a>
+            <a href="experience.html">Experience</a>
+            <a href="projects.html">Projects</a>
+            <a href="achievements.html">Achievements</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="achievement-container">
+        <h1 class="page-title">Achievements</h1>
+        
+        <div class="achievement-grid">
+            <div class="achievement-card">
+                <div class="achievement-year">2023</div>
+                <div class="achievement-title">Best Staff of the Year</div>
+                <div class="achievement-description">
+                    Awarded Best Staff at Benigross Enterprise for exceptional performance and dedication throughout the year.
+                </div>
+            </div>
+
+            <div class="achievement-card">
+                <div class="achievement-year">2023</div>
+                <div class="achievement-title">Top Crypto Vendor</div>
+                <div class="achievement-description">
+                    Received outstanding customer reviews for being a trusted and reliable cryptocurrency vendor.
+                </div>
+            </div>
+
+            <div class="achievement-card">
+                <div class="achievement-year">2023</div>
+                <div class="achievement-title">Best Eastern Drummer</div>
+                <div class="achievement-description">
+                    Recognized as the Best Eastern Drummer of the Year, showcasing exceptional musical talent and skill.
+                </div>
+            </div>
+
+            <div class="achievement-card">
+                <div class="achievement-year">2024</div>
+                <div class="achievement-title">Dean's List</div>
+                <div class="achievement-description">
+                    Added to the Dean's List at Saigon Business School (SBS) for outstanding academic performance.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertainment - Ohabasirim Favour Uzondu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .nav-container {
+            background: rgba(44, 62, 80, 0.95);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-menu {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 15px;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .game-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .game-title {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        #game-canvas {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        .game-controls {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .score {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #FFD700, #FF6B00);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .instructions {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="skills.html">Skills</a>
+            <a href="experience.html">Experience</a>
+            <a href="projects.html">Projects</a>
+            <a href="achievements.html">Achievements</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <h1 class="game-title">Catch the Coins</h1>
+        
+        <div class="instructions">
+            <h2>How to Play</h2>
+            <p>Use left and right arrow keys to move the basket and catch falling coins. Avoid the bombs!</p>
+        </div>
+
+        <canvas id="game-canvas" width="600" height="400"></canvas>
+        
+        <div class="game-controls">
+            <div class="score">Score: <span id="score">0</span></div>
+            <button class="btn" onclick="startGame()">Start Game</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        let score = 0;
+        let gameLoop;
+        let player = {
+            x: canvas.width / 2,
+            y: canvas.height - 30,
+            width: 50,
+            height: 30,
+            speed: 5
+        };
+        let coins = [];
+        let bombs = [];
+        let keys = {};
+
+        // Event listeners for keyboard
+        document.addEventListener('keydown', (e) => keys[e.key] = true);
+        document.addEventListener('keyup', (e) => keys[e.key] = false);
+
+        function drawPlayer() {
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(player.x - player.width/2, player.y, player.width, player.height);
+        }
+
+        function createCoin() {
+            coins.push({
+                x: Math.random() * (canvas.width - 20),
+                y: 0,
+                size: 20,
+                speed: 2 + Math.random() * 2
+            });
+        }
+
+        function createBomb() {
+            bombs.push({
+                x: Math.random() * (canvas.width - 20),
+                y: 0,
+                size: 20,
+                speed: 3 + Math.random() * 2
+            });
+        }
+
+        function drawCoin(coin) {
+            ctx.beginPath();
+            ctx.arc(coin.x + coin.size/2, coin.y + coin.size/2, coin.size/2, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFD700';
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawBomb(bomb) {
+            ctx.beginPath();
+            ctx.arc(bomb.x + bomb.size/2, bomb.y + bomb.size/2, bomb.size/2, 0, Math.PI * 2);
+            ctx.fillStyle = '#FF0000';
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function updateGame() {
+            // Move player
+            if (keys['ArrowLeft'] && player.x > player.width/2) player.x -= player.speed;
+            if (keys['ArrowRight'] && player.x < canvas.width - player.width/2) player.x += player.speed;
+
+            // Update coins
+            coins.forEach((coin, index) => {
+                coin.y += coin.speed;
+                if (coin.y > canvas.height) {
+                    coins.splice(index, 1);
+                }
+                // Check collision with player
+                if (coin.y + coin.size > player.y && 
+                    coin.x + coin.size > player.x - player.width/2 && 
+                    coin.x < player.x + player.width/2) {
+                    coins.splice(index, 1);
+                    score += 10;
+                    document.getElementById('score').textContent = score;
+                }
+            });
+
+            // Update bombs
+            bombs.forEach((bomb, index) => {
+                bomb.y += bomb.speed;
+                if (bomb.y > canvas.height) {
+                    bombs.splice(index, 1);
+                }
+                // Check collision with player
+                if (bomb.y + bomb.size > player.y && 
+                    bomb.x + bomb.size > player.x - player.width/2 && 
+                    bomb.x < player.x + player.width/2) {
+                    endGame();
+                }
+            });
+        }
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer();
+            coins.forEach(drawCoin);
+            bombs.forEach(drawBomb);
+        }
+
+        function gameStep() {
+            updateGame();
+            drawGame();
+        }
+
+        function startGame() {
+            score = 0;
+            document.getElementById('score').textContent = score;
+            coins = [];
+            bombs = [];
+            clearInterval(gameLoop);
+            
+            gameLoop = setInterval(() => {
+                if (Math.random() < 0.03) createCoin();
+                if (Math.random() < 0.02) createBomb();
+                gameStep();
+            }, 1000/60);
+        }
+
+        function endGame() {
+            clearInterval(gameLoop);
+            alert(`Game Over! Score: ${score}`);
+        }
+
+        // Initial draw
+        drawGame();
+    </script>
+</body>
+</html> 
